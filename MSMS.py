@@ -1,4 +1,5 @@
 # MSMS.py - The In-Memory Prototype
+#fragment 1
 # --- Data Models ---
 class Student:
     """A blueprint for student objects. Holds their info."""
@@ -24,6 +25,7 @@ teacher_db = []
 next_student_id = 1
 next_teacher_id = 1
 
+#fragment 2
 # --- Core Helper Functions ---
 def add_teacher(name, speciality):
     """Creates a Teacher object and adds it to the database."""
@@ -57,17 +59,37 @@ def find_students(term):
     """Finds students by name."""
     print(f"\n--- Finding Students matching '{term}' ---")
     # TODO: Create an empty list to store results.
+    results = []
     # Loop through student_db. If the search 'term' (case-insensitive) is in the student's name,
+    for i in range(len(student_db)):
+        student = student_db[i]
+        if term.lower() in student.name.lower():
     # add them to your results list.
+            results.append(student)
     # After the loop, if the results list is empty, print "No match found."
     # Otherwise, print the details for each student in the results list.
-    pass
+    if not results:
+        print("No match found.")
+    else:
+        for student in results:
+            print(f"  ID: {student.id}, Name: {student.name}, Enrolled in: {student.enrolled_in}")
 
 def find_teachers(term):
     """Finds teachers by name or speciality."""
     # TODO: Implement this function similar to find_students, but check
     # for the term in BOTH the teacher's name AND their speciality.
-    pass
+    results = []
+    for i in range(len(teacher_db)):
+        teacher = teacher_db[i] 
+        if term.lower() in teacher.name.lower() or term.lower() in teacher.speciality.lower():
+            results.append(teacher)
+    if not results:
+        print("No match found.")
+    else:
+        for teacher in results:
+            print(f"  ID: {teacher.id}, Name: {teacher.name}, Speciality: {teacher.speciality}")
+
+#fragment 3
 # --- Front Desk Functions ---
 def find_student_by_id(student_id):
     """A new helper to find one student by their exact ID."""
@@ -95,7 +117,7 @@ def front_desk_enrol(student_id, instrument):
     # TODO: Use your new find_student_by_id() helper.
     student = find_student_by_id(student_id)
     # TODO: If the student is found, append the instrument to their 'enrolled_in' list.
-    if student:
+    if student in student_db:
         student.enrolled_in.append(instrument)
         print(f"Front Desk: Enrolled student {student_id} in '{instrument}'.")
     else:
@@ -108,6 +130,7 @@ def front_desk_lookup(term):
     find_students(term)
     find_teachers(term) 
 
+#fragment 4
     # --- Main Application ---
 def main():
     """Runs the main interactive menu for the receptionist."""
